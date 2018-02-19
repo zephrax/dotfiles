@@ -1,0 +1,272 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+set rtp+=~/.vim/bundle/Vundle.vim
+set encoding=utf-8
+set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Nerd\ Font\ Complete\ 10
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'majutsushi/tagbar'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'pangloss/vim-javascript'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/syntastic'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'Valloric/MatchTagAlways'
+Plugin 'jiangmiao/auto-pairs.git'
+Plugin 'derekwyatt/vim-scala'
+Plugin 'jwalton512/vim-blade'
+Plugin 'ZoomWin'
+Plugin 'maksimr/vim-jsbeautify'
+Plugin 'morhetz/gruvbox'
+Plugin 'gcavallanti/vim-noscrollbar'
+Plugin 'kristijanhusak/vim-hybrid-material'
+Plugin 'tpope/vim-surround'
+Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'thinca/vim-localrc'
+Plugin 'fatih/vim-go'
+Plugin 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plugin 'unkiwii/vim-nerdtree-sync'
+Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+"Plugin 'myhere/vim-nodejs-complete'
+Plugin 'valloric/youcompleteme'
+"Plugin 'klen/python-mode'
+Plugin 'hdima/python-syntax'
+Plugin 'bufexplorer.zip'
+Plugin 'kylef/apiblueprint.vim'
+let patchedfont = 1
+
+let g:pymode_folding = 0
+
+"Plugin 'valloric/youcompleteme'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+" Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+" Plugin 'L9'
+" Git plugin not hosted on GitHub
+" Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+" Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+" Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+function! ToggleMouse()
+    " check if mouse is enabled
+    if &mouse == 'a'
+        " disable mouse
+        set mouse=
+    else
+        " enable mouse everywhere
+        set mouse=a
+    endif
+endfunc
+
+nmap <F3> :call ToggleMouse()<CR>
+
+
+map <C-n> :NERDTreeToggle<CR>
+nmap <F8> :TagbarToggle<CR>
+
+" Tabs
+nnoremap th  :tabfirst<CR>
+nnoremap tj  :tabnext<CR>
+nnoremap tk  :tabprev<CR>
+nnoremap tl  :tablast<CR>
+nnoremap tt  :tabedit<Space>
+nnoremap tn  :tabnext<Space>
+nnoremap tm  :tabm<Space>
+nnoremap td  :tabclose<CR>
+nnoremap tn  :tabnew<CR>
+nnoremap tn  :tabnew<CR>
+nnoremap t+  :+tabmove<CR>
+nnoremap t-  :-tabmove<CR>
+
+" Alternatively use
+" "nnoremap th :tabnext<CR>
+" "nnoremap tl :tabprev<CR>
+
+if has("autocmd")
+    autocmd FileType nerdtree setlocal nolist
+    autocmd FileType html setlocal expandtab shiftwidth=4 softtabstop=4
+    autocmd FileType apiblueprint setlocal expandtab shiftwidth=4 softtabstop=4
+    autocmd FileType xhtml setlocal expandtab shiftwidth=4 softtabstop=4
+    autocmd FileType python setlocal expandtab shiftwidth=4 softtabstop=4
+    autocmd FileType javascript setlocal expandtab shiftwidth=2 softtabstop=2
+    autocmd FileType ruby setlocal expandtab shiftwidth=2 softtabstop=2
+    autocmd FileType yaml setlocal expandtab shiftwidth=2 softtabstop=2
+    autocmd FileType c setlocal expandtab shiftwidth=2 softtabstop=2
+    autocmd FileType cpp setlocal expandtab shiftwidth=2 softtabstop=2
+    autocmd FileType php setlocal expandtab shiftwidth=4 softtabstop=4
+
+
+    autocmd FileType javascript noremap <buffer> <c-f> :call JsBeautify()<CR>
+    " for json
+    autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<CR>
+    " for jsx
+    autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<CR>
+    " for html
+    autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<CR>
+    " for css or scss
+    autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<CR>
+
+    autocmd BufReadPre *.hbs setfiletype xhtml
+    autocmd FileType apiblueprint nnoremap <C-b> :call GenerateRefract()<cr>
+endif
+
+
+
+:filetype indent on
+:set smartindent
+let g:airline_theme='wombat'
+let g:airline#extensions#tabline#enabled = 1
+" Airline
+let g:airline#extensions#tabline#enabled=1         " Tabline
+let g:airline#extensions#tabline#show_buffers=0    " Disable buffers
+let g:airline#extensions#tabline#show_splits=0     " Disable buffers
+let g:airline#extensions#tabline#show_tabs=1
+let g:airline#extensions#tabline#show_tab_type = 0 " Hide right tab indicator
+let g:airline#extensions#tabline#show_close_button = 0
+
+:set laststatus=2
+:syntax on
+:set nu
+:set t_Co=256
+let g:airline_powerline_fonts = 1
+" :set list
+:set listchars=tab:>-,eol:$
+
+"set statusline+=%#warningmsg#
+"set statusline+=%{noscrollbar#statusline()}
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_javascript_checkers = ['eslint']
+
+:set mouse=a
+
+" MatchTagAlways filetypes
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+    \ 'php' : 1,
+    \}
+
+
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+set wildignore+=*\\tmp\\*,*.swp,*.zip,*.exe  " Windows
+
+" let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll)$',
+  \ 'link': 'some_bad_symbolic_links',
+  \ }
+
+":colorscheme delek
+":colorscheme gruvbox
+
+:colorscheme hybrid_material
+let g:enable_bold_font = 1
+
+:hi CursorLine cterm=NONE ctermbg=8 ctermfg=white guibg=grey guifg=white
+set cursorline
+set cursorcolumn
+set background=dark
+
+nnoremap <F2> :set invpaste paste?<CR>
+nnoremap <F4> :set invnu nu?<CR>
+set pastetoggle=<F2>
+set showmode
+
+:set nowritebackup
+:set nobackup
+:set noswapfile
+
+function! Noscrollbar(...)
+    let w:airline_section_z = '%{noscrollbar#statusline()} %3p%% %#__accent_bold#%{g:airline_symbols.linenr}%#__accent_bold#%4l%#__restore__#%#__restore__#%#__accent_bold#%#__accent_bold#/%L%{g:airline_symbols.maxlinenr}%#__restore__#%#__restore__# :%3v'
+endfunction
+call airline#add_statusline_func('Noscrollbar')
+
+:vmap ,x :!tidy -q -i --show-errors 0<CR>
+:hi Search cterm=NONE ctermfg=black ctermbg=blue
+
+"set guifont=Droid\ Sans\ Mono\ for\ Powerline\ Plus\ Nerd\ File\ Types\ 11
+
+Plugin 'ryanoasis/vim-devicons'
+
+if patchedfont
+    " loading the plugin
+    let g:webdevicons_enable = 1
+
+    " adding the flags to NERDTree
+    let g:webdevicons_enable_nerdtree = 1
+
+    " adding to vim-airline's tabline
+    let g:webdevicons_enable_airline_tabline = 1
+
+    " adding to vim-airline's statusline
+    let g:webdevicons_enable_airline_statusline = 1
+
+    " Force extra padding in NERDTree so that the filetype icons line up vertically
+    let g:WebDevIconsNerdTreeGitPluginForceVAlign = 1
+
+    " change the default character when no match found
+    "let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = '!'
+
+    " enable folder/directory glyph flag (disabled by default with 0)
+    let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+
+    " enable pattern matching glyphs on folder/directory (enabled by default with 1)
+    let g:DevIconsEnableFolderPatternMatching = 1
+else
+    let g:webdevicons_enable = 0
+endif
+
+"let g:WebDevIconsNerdTreeAfterGlyphPadding = '  '
+
+if exists("g:loaded_webdevicons")
+  call webdevicons#refresh()
+endif
+
+let g:NumberToggleTrigger="<F5>"
+let g:ycm_server_python_interpreter = '/usr/bin/python2'
+let g:ycm_add_preview_to_completeop = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
+let python_highlight_all = 1
+":set bufhidden=hide
+
